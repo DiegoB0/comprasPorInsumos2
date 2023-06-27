@@ -3,10 +3,10 @@
     class conexion{
 
         function con(){
-            $host="localhost";
-            $db="database";
+            $host="127.0.0.1";
+            $db="softrestaurant10pro";
             $servidor="sa";
-            $pass="pacochato";
+            $pass="estadias";
             $puerto=1433;
 
             try{
