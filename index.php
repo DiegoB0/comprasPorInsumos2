@@ -1,3 +1,9 @@
+<?php
+require_once('./db/db.php');
+$conexion = new Conexion();
+$filaController = $conexion->con();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,6 +20,9 @@
 </head>
 
 <body>
+
+
+
   <div class="wrapper fadeInDown">
     <div id="formContent">
       <!-- Tabs Titles -->
