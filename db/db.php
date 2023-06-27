@@ -1,25 +1,35 @@
 <?php
 
-    class conexion{
+class Conexion
+{
 
-        function con(){
-            $host="127.0.0.1";
-            $db="softrestaurant10pro";
-            $servidor="sa";
-            $pass="estadias";
-            $puerto=1433;
+  function __construct()
+  {
 
-            try{
+  }
 
-                $con = new PDO("sqlsrv:Server=$host,$puerto;Database=$db",$servidor,$pass);
-                echo "conexión lograda:D";
+  function con()
+  {
+    $host = "127.0.0.1";
+    $db = "softrestaurant10pro";
+    $servidor = "sa";
+    $pass = "estadias";
+    $puerto = 1433;
 
-            }catch(PDOException $nono){
-                echo "no se hizo :( a $db, error: $nono";
-            }
+    try {
 
-            return $con;
-        }
+      $cadenaCnx = "sqlsrv: Server=ROMAN\NATIONALSOFT2023;Database=softrestaurant10pro";
+      $user = "sa";
+      $password = "estadias";
+
+      $conexion = new PDO($cadenaCnx, $user, $password);
+
+      echo "conexión lograda:D";
+
+    } catch (PDOException $nono) {
+      echo "no se hizo :( a $db, error: $nono";
     }
-    
-?>
+
+    return $conexion;
+  }
+}
