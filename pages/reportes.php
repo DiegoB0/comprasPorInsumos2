@@ -11,9 +11,17 @@
 	  ELSE 0
 	END) AS costo,
 	 SUM(CASE
-	  WHEN c.cantidad > 0 THEN c.cantidad
+	  WHEN c.cantidad > 0 AND m.idconcepto = 'EPC' THEN c.cantidad
 	  ELSE 0
 	END) AS cantidadcomprada,
+	(SUM(CASE
+	  WHEN m.cantidad > 0 THEN m.cantidad
+	  ELSE 0
+	END)
+	/NULLIF(SUM(CASE
+	  WHEN c.cantidad > 0 AND m.idconcepto = 'EPC' THEN c.cantidad
+	  ELSE 0
+	END), 0)) AS rendimiento,
 	SUM(CASE
 	  WHEN m.cantidad > 0 THEN m.cantidad
 	  ELSE 0
@@ -112,7 +120,7 @@
 									<td><?php echo $fila->descripcion ?></td>
 									<td><?php echo $fila->costo ?></td>
 									<td><?php echo $fila->cantidadcomprada ?></td>
-									<td></td>
+									<td><?php echo $fila->rendimiento ?></td>
 									<td><?php echo $fila->cantidadcocido ?></td>
 									<td><?php echo $fila->ventas ?></td>
 									<td><?php echo $fila->inventario_final ?></td>	
