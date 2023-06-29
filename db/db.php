@@ -10,11 +10,7 @@ class Conexion
 
   function con()
   {
-    $host = "127.0.0.1";
     $db = "softrestaurant10pro";
-    $servidor = "sa"; //cambiar al propio
-    $pass = "estadias"; //cambiar al propio
-    $puerto = 1433;
 
     try {
 
@@ -25,7 +21,7 @@ class Conexion
 
       $conexion = new PDO($cadenaCnx, $user, $password);
 
-      echo "conexión lograda:D";
+      //echo "conexión lograda:D";
 
     } catch (PDOException $nono) {
       echo "no se hizo :( a $db, error: $nono";

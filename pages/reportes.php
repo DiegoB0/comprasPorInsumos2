@@ -83,7 +83,7 @@
 								<?php foreach($registros as $fila) : ?>
 								<tr>
 									<td><?php echo $fila->descripcion ?></td>
-									<td><?php ?></td>
+									<td><?php echo $fila->costo?></td>
 									<td><?php ?></td>
 									<td><?php ?></td>
 									<td><?php ?></td>
@@ -91,33 +91,6 @@
 									<td><?php ?></td>	
 								</tr>
 								<?php endforeach; ?>
-								<tr>
-									<td>Carne de puerco</td>
-									<td>120.00</td>
-									<td>15.00</td>
-									<td>0.63</td>
-									<td>9.38</td>
-									<td>9.38</td>
-									<td>9.38</td>
-								</tr>
-								<tr>
-									<td>Tacos al pastor</td>
-									<td>120.00</td>
-									<td>15.00</td>
-									<td>0.63</td>
-									<td>9.38</td>
-									<td>0.63</td>
-									<td>9.38</td>
-								</tr>
-								<tr>
-									<td>Coca colas</td>
-									<td>120.00</td>
-									<td>15.00</td>
-									<td>0.63</td>
-									<td>9.38</td>
-									<td>0.63</td>
-									<td>9.38</td>
-								</tr>
 							</tbody>
 						</table>
 					</div>
