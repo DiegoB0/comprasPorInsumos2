@@ -13,15 +13,15 @@
 	 SUM(CASE
 	  WHEN c.cantidad > 0 THEN c.cantidad
 	  ELSE 0
-	END) AS suma_compras_positivas_cantidadcomprada,
+	END) AS cantidadcomprada,
 	SUM(CASE
 	  WHEN m.cantidad > 0 THEN m.cantidad
 	  ELSE 0
-	END) AS suma_movimientos_positivos_cantidadcocido,
+	END) AS cantidadcocido,
 	SUM(CASE
 	  WHEN m.cantidad < 0 THEN m.cantidad
 	  ELSE 0
-	END) AS suma_movimientos_negativos_ventas,
+	END) AS ventas,
 	(SUM(CASE
 	  WHEN m.cantidad > 0 THEN m.cantidad
 	  ELSE 0
@@ -111,10 +111,10 @@
 								<tr>
 									<td><?php echo $fila->descripcion ?></td>
 									<td><?php echo $fila->costo ?></td>
-									<td><?php echo $fila->suma_compras_positivas_cantidadcomprada ?></td>
+									<td><?php echo $fila->cantidadcomprada ?></td>
 									<td></td>
-									<td><?php echo $fila->suma_movimientos_positivos_cantidadcocido ?></td>
-									<td><?php echo $fila->suma_movimientos_negativos_ventas ?></td>
+									<td><?php echo $fila->cantidadcocido ?></td>
+									<td><?php echo $fila->ventas ?></td>
 									<td><?php echo $fila->inventario_final ?></td>	
 								</tr>
 								<?php endforeach; ?>
