@@ -1,4 +1,4 @@
-$(document).ready(function() {    
+$(document).ready(function() {  
     $('#example').DataTable({        
         language: {
                 "lengthMenu": "Mostrar _MENU_ registros",
@@ -38,5 +38,9 @@ $(document).ready(function() {
 				className: 'btn btn-info'
 			},
 		]	        
-    });     
+    });
+		/* Datepicker js */
+		$('#datepicker').datepicker({
+			format: 'dd/mm/yyyy',
+		});       
 });

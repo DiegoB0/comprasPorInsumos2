@@ -83,6 +83,8 @@
 			integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
 			crossorigin="anonymous"
 		/>
+		<!-- Datepicker style -->
+	<link rel="stylesheet" href="../libs/bootstrap-datepicker/css/bootstrap-datepicker.css" />
 	</head>
 
 	<body>
@@ -98,6 +100,15 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="table-responsive">
+
+						<!-- Datepicker -->
+					<div class="input-daterange input-group mb-4" id="datepicker">
+						De:
+						<input type="text" class="input-sm form-control border-bottom border rounded" name="start" />
+						<span class="input-group-addon">a: </span>
+						<input type="text" class="input-sm form-control border rounded" name="end" />
+					</div>
+
 						<table
 							id="example"
 							class="table table-striped table-bordered"
@@ -153,5 +164,6 @@
 
 		<!-- código JS propio-->
 		<script type="text/javascript" src="../assets/js/main.js"></script>
+		<script src="../libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 	</body>
 </html>
