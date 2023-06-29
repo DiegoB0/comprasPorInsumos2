@@ -5,8 +5,35 @@
 	$conn = $db->con();
 ?>
 <?php
-	$consulta="SELECT insumos.descripcion, insumos.unidad, movsinv.idconcepto, movsinv.costo, movsinv.cantidad 
-	FROM insumos LEFT JOIN movsinv ON insumos.idinsumo = movsinv.idinsumo";
+	$consulta="SELECT i.idinsumo, i.descripcion,
+	SUM(CASE
+	  WHEN m.costo > 0 AND m.cantidad > 0 AND m.idcompra IS NOT NULL THEN m.costo * m.cantidad
+	  ELSE 0
+	END) AS costo,
+	 SUM(CASE
+	  WHEN c.cantidad > 0 THEN c.cantidad
+	  ELSE 0
+	END) AS suma_compras_positivas_cantidadcomprada,
+	SUM(CASE
+	  WHEN m.cantidad > 0 THEN m.cantidad
+	  ELSE 0
+	END) AS suma_movimientos_positivos_cantidadcocido,
+	SUM(CASE
+	  WHEN m.cantidad < 0 THEN m.cantidad
+	  ELSE 0
+	END) AS suma_movimientos_negativos_ventas,
+	(SUM(CASE
+	  WHEN m.cantidad > 0 THEN m.cantidad
+	  ELSE 0
+	END)
+	+SUM(CASE
+	  WHEN m.cantidad < 0 THEN m.cantidad
+	  ELSE 0
+	END)) AS inventario_final
+  FROM insumos i
+  LEFT JOIN movsinv m ON i.idinsumo = m.idinsumo
+  LEFT JOIN comprasmovtos c ON i.idinsumo = c.idinsumo
+  GROUP BY i.idinsumo, i.descripcion";
 	$stmt = $conn->query($consulta);
 	$registros = $stmt->fetchAll(PDO::FETCH_OBJ);
 	?>
@@ -83,12 +110,12 @@
 								<?php foreach($registros as $fila) : ?>
 								<tr>
 									<td><?php echo $fila->descripcion ?></td>
-									<td><?php echo $fila->costo?></td>
-									<td><?php ?></td>
-									<td><?php ?></td>
-									<td><?php ?></td>
-									<td><?php ?></td>
-									<td><?php ?></td>	
+									<td><?php echo $fila->costo ?></td>
+									<td><?php echo $fila->suma_compras_positivas_cantidadcomprada ?></td>
+									<td></td>
+									<td><?php echo $fila->suma_movimientos_positivos_cantidadcocido ?></td>
+									<td><?php echo $fila->suma_movimientos_negativos_ventas ?></td>
+									<td><?php echo $fila->inventario_final ?></td>	
 								</tr>
 								<?php endforeach; ?>
 							</tbody>
