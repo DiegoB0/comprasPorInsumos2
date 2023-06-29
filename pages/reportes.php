@@ -1,3 +1,16 @@
+<?php
+	//include_once('./controllers/login.php');
+	require_once('../db/db.php');
+	$db = new Conexion();
+	$conn = $db->con();
+?>
+<?php
+	$consulta="SELECT insumos.descripcion, insumos.unidad, movsinv.idconcepto, movsinv.costo, movsinv.cantidad 
+	FROM insumos LEFT JOIN movsinv ON insumos.idinsumo = movsinv.idinsumo";
+	$stmt = $conn->query($consulta);
+	$registros = $stmt->fetchAll(PDO::FETCH_OBJ);
+	?>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -54,8 +67,7 @@
 							id="example"
 							class="table table-striped table-bordered"
 							cellspacing="0"
-							width="100%"
-						>
+							width="100%">
 							<thead>
 								<tr>
 									<th>Insumo</th>
@@ -63,21 +75,29 @@
 									<th>Cantidad Comprada</th>
 									<th>Rendimiento</th>
 									<th>Cantidad Cocido</th>
+									<th>Venta</th>
+									<th>Inventario Final</th>
 								</tr>
 							</thead>
 							<tbody>
+								<?php foreach($registros as $fila) : ?>
 								<tr>
-									<td>Carne de res</td>
-									<td>120.00</td>
-									<td>15.00</td>
-									<td>0.63</td>
-									<td>9.38</td>
+									<td><?php echo $fila->descripcion ?></td>
+									<td><?php ?></td>
+									<td><?php ?></td>
+									<td><?php ?></td>
+									<td><?php ?></td>
+									<td><?php ?></td>
+									<td><?php ?></td>	
 								</tr>
+								<?php endforeach; ?>
 								<tr>
 									<td>Carne de puerco</td>
 									<td>120.00</td>
 									<td>15.00</td>
 									<td>0.63</td>
+									<td>9.38</td>
+									<td>9.38</td>
 									<td>9.38</td>
 								</tr>
 								<tr>
@@ -86,11 +106,15 @@
 									<td>15.00</td>
 									<td>0.63</td>
 									<td>9.38</td>
+									<td>0.63</td>
+									<td>9.38</td>
 								</tr>
 								<tr>
 									<td>Coca colas</td>
 									<td>120.00</td>
 									<td>15.00</td>
+									<td>0.63</td>
+									<td>9.38</td>
 									<td>0.63</td>
 									<td>9.38</td>
 								</tr>

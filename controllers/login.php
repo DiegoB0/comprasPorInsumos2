@@ -12,7 +12,7 @@ $filaController = $model->Logear();
 
 if ($filaController > 0) {
   echo '<h1> Bienvenido de nuevo </h1>';
-  header('refresh:2; url=http://localhost/comprasPorInsumos2/pages/reportes.html');
+  header('refresh:2; url=http://localhost/comprasPorInsumos2/pages/reportes.php');
 
 } else {
 
