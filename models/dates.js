@@ -8,7 +8,6 @@ $(document).ready(function() {
     $('#end_date').val();
 
     let start_date = start_date
-    let end_date = end_date
 
     const [dateString, timeString] = dateTimeString.split(' ')
     const [day, month, year] = dateString.split('/')
@@ -16,9 +15,7 @@ $(document).ready(function() {
 
     const date1 = new Date(+year, +month - 1, +day, +hour, +minute, +second + .000)
 
-    const date2 = new Date(+year, +month - 1, +day, +hour, +minute, +second + .000)
-
-    console.log(date1, date2);
+    console.log(date1);
 
 
 });
