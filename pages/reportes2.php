@@ -125,9 +125,9 @@
 						<!-- Datepicker -->
 					<div class="input-daterange input-group mb-4" id="datepicker">
 						De:
-						<input type="text" class="input-sm form-control border-bottom border rounded" name="start_date" />
+						<input type="text" class="input-sm form-control border-bottom border rounded" id="start_date" />
 						<span class="input-group-addon">a: </span>
-						<input type="text" class="input-sm form-control border rounded" name="end_date" />
+						<input type="text" class="input-sm form-control border rounded" id="end_date" />
 					</div>
 
 						<table
