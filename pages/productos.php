@@ -4,45 +4,9 @@
 	$conn = $db->con();
 ?>
 <?php
-	$consulta="SELECT i.idinsumo, i.descripcion,
-	SUM(CASE
-	  WHEN c.costo > 0 AND m.idcompra IS NOT NULL THEN c.costo
-	  ELSE 0
-	END) AS costo,
-	 SUM(CASE
-	  WHEN c.cantidad > 0 AND m.idconcepto = 'EPC' THEN c.cantidad
-	  ELSE 0
-	END) AS cantidadcomprada,
-	(SUM(CASE
-	  WHEN m.cantidad > 0 THEN m.cantidad
-	  ELSE 0
-	END)
-	/NULLIF(SUM(CASE
-	  WHEN c.cantidad > 0 AND m.idconcepto = 'EPC' THEN c.cantidad
-	  ELSE 0
-	END), 0)) AS rendimiento,
-	SUM(CASE
-	  WHEN m.cantidad > 0 THEN m.cantidad
-	  ELSE 0
-	END) AS cantidadcocido,
-	SUM(CASE
-	  WHEN m.cantidad < 0 THEN m.cantidad
-	  ELSE 0
-	END) AS ventas,
-	(SUM(CASE
-	  WHEN m.cantidad > 0 THEN m.cantidad
-	  ELSE 0
-	END)
-	+SUM(CASE
-	  WHEN m.cantidad < 0 THEN m.cantidad
-	  ELSE 0
-	END)) AS inventario_final
-  FROM insumos i
-  LEFT JOIN movsinv m ON i.idinsumo = m.idinsumo
-  LEFT JOIN comprasmovtos c ON i.idinsumo = c.idinsumo
-  GROUP BY i.idinsumo, i.descripcion";
+	$consulta="";
 	$stmt = $conn->query($consulta);
-	$registros = $stmt->fetchAll(PDO::FETCH_OBJ);
+	//$registros = $stmt->fetchAll(PDO::FETCH_OBJ);
 	?>
 
 <!DOCTYPE html>
@@ -55,7 +19,7 @@
 			content="width=device-width, initial-scale=1, shrink-to-fit=no"
 		/>
 		<link rel="shortcut icon" href="#" />
-		<title>Reporte de Compras por Insumo</title>
+		<title>Productos</title>
 
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css" />
@@ -89,10 +53,15 @@
 	<body>
 		<header>
 			<h1 class="text-center text-secondary mt-3">
-				Reporte de Compras por Insumo en Taquerías
 			</h1>
 
-			<center><a href="../pages/productos.php"><button type="button" class="btn btn-outline-info mt-3">Productos</button></a></center>
+			<center>
+				<a href="../pages/reportes.php">
+					<button type="button" class="btn btn-outline-info mt-3">
+						Reportes
+					</button>
+				</a>
+			</center>
 		</header>
 
 		<div style="height: 30px"></div>
@@ -104,12 +73,12 @@
 					<div class="table-responsive">
 
 						<!-- Datepicker -->
-					<div class="input-daterange input-group mb-4" id="datepicker">
+					<!-- <div class="input-daterange input-group mb-4" id="datepicker">
 						De:
 						<input type="text" class="input-sm form-control border-bottom border rounded" name="start" />
 						<span class="input-group-addon">a: </span>
 						<input type="text" class="input-sm form-control border rounded" name="end" />
-					</div>
+					</div> -->
 
 						<table
 							id="example"
@@ -118,26 +87,23 @@
 							width="100%">
 							<thead>
 								<tr>
-									<th>Insumo</th>
-									<th>Costo</th>
-									<th>Cantidad Comprada</th>
-									<th>Rendimiento</th>
-									<th>Cantidad Cocido</th>
-									<th>Venta</th>
-									<th>Inventario Final</th>
+									<th>Producto</th>
+									<th>Unidad</th>
+									<th>Porción</th>
+									<th>Cantidad Venida</th>
+									<th>Insumo Utilizado</th>
 								</tr>
 							</thead>
 							<tbody>
-								<?php foreach($registros as $fila) : ?>
+								<!-- <?php foreach($registros as $fila) : ?>
 								<tr>
 									<td><?php echo $fila->descripcion ?></td>
 									<td><?php echo $fila->costo ?></td>
 									<td><?php echo $fila->cantidadcomprada ?></td>
 									<td><?php echo $fila->rendimiento ?></td>
 									<td><?php echo $fila->cantidadcocido ?></td>
-									<td><?php echo $fila->ventas ?></td>
-									<td><?php echo $fila->inventario_final ?></td>	
-								</tr>
+									<td><?php echo $fila->ventas ?></td>	
+								</tr> -->
 								<?php endforeach; ?>
 							</tbody>
 						</table>

@@ -1,49 +1,68 @@
 <?php
-	require_once('../db/db.php');
-	$db = new Conexion();
-	$conn = $db->con();
+
+    class insumos_fecha
+    {
+
+        function __construct()
+        {
+
+        }
+
+        function i_fecha()
+        {
+            require_once('../db/db.php');
+            $db = new Conexion();
+            $conn = $db->con();
+
+            try
+            {
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                $result = $conn->query("SELECT i.idinsumo, i.descripcion,
+                SUM(CASE
+                WHEN c.costo > 0 AND m.idconcepto = 'EPC' THEN c.costo
+                ELSE 0
+                END) AS costo,
+                SUM(CASE
+                WHEN c.cantidad > 0 AND m.idconcepto = 'EPC' THEN c.cantidad
+                ELSE 0
+                END) AS cantidadcomprada,
+                (SUM(CASE
+                WHEN m.cantidad > 0 THEN m.cantidad
+                ELSE 0
+                END)
+                /NULLIF(SUM(CASE
+                WHEN c.cantidad > 0 AND m.idconcepto = 'EPC' THEN c.cantidad
+                ELSE 0
+                END), 0)) AS rendimiento,
+                SUM(CASE
+                WHEN m.cantidad > 0 THEN m.cantidad
+                ELSE 0
+                END) AS cantidadcocido,
+                SUM(CASE
+                WHEN m.cantidad < 0 THEN m.cantidad
+                ELSE 0
+                END) AS ventas,
+                (SUM(CASE
+                WHEN m.cantidad > 0 THEN m.cantidad
+                ELSE 0
+                END)
+                +SUM(CASE
+                WHEN m.cantidad < 0 THEN m.cantidad
+                ELSE 0
+                END)) AS inventario_final
+                FROM insumos i
+                LEFT JOIN movsinv m ON i.idinsumo = m.idinsumo
+                LEFT JOIN comprasmovtos c ON i.idinsumo = c.idinsumo
+                WHERE (m.fecha BETWEEN :start_date AND :end_date)
+                GROUP BY i.idinsumo, i.descripcion");
+                $stmt->execute(array(':start_date' => $_POST['start_date'], ':end_date' => $_POST['end_date']));
+
+            }
+        }
+    }
+
 ?>
-<?php
-	$consulta="SELECT i.idinsumo, i.descripcion,
-	SUM(CASE
-	  WHEN c.costo > 0 AND m.idcompra IS NOT NULL THEN c.costo
-	  ELSE 0
-	END) AS costo,
-	 SUM(CASE
-	  WHEN c.cantidad > 0 AND m.idconcepto = 'EPC' THEN c.cantidad
-	  ELSE 0
-	END) AS cantidadcomprada,
-	(SUM(CASE
-	  WHEN m.cantidad > 0 THEN m.cantidad
-	  ELSE 0
-	END)
-	/NULLIF(SUM(CASE
-	  WHEN c.cantidad > 0 AND m.idconcepto = 'EPC' THEN c.cantidad
-	  ELSE 0
-	END), 0)) AS rendimiento,
-	SUM(CASE
-	  WHEN m.cantidad > 0 THEN m.cantidad
-	  ELSE 0
-	END) AS cantidadcocido,
-	SUM(CASE
-	  WHEN m.cantidad < 0 THEN m.cantidad
-	  ELSE 0
-	END) AS ventas,
-	(SUM(CASE
-	  WHEN m.cantidad > 0 THEN m.cantidad
-	  ELSE 0
-	END)
-	+SUM(CASE
-	  WHEN m.cantidad < 0 THEN m.cantidad
-	  ELSE 0
-	END)) AS inventario_final
-  FROM insumos i
-  LEFT JOIN movsinv m ON i.idinsumo = m.idinsumo
-  LEFT JOIN comprasmovtos c ON i.idinsumo = c.idinsumo
-  GROUP BY i.idinsumo, i.descripcion";
-	$stmt = $conn->query($consulta);
-	$registros = $stmt->fetchAll(PDO::FETCH_OBJ);
-	?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -106,9 +125,9 @@
 						<!-- Datepicker -->
 					<div class="input-daterange input-group mb-4" id="datepicker">
 						De:
-						<input type="text" class="input-sm form-control border-bottom border rounded" name="start" />
+						<input type="text" class="input-sm form-control border-bottom border rounded" name="start_date" />
 						<span class="input-group-addon">a: </span>
-						<input type="text" class="input-sm form-control border rounded" name="end" />
+						<input type="text" class="input-sm form-control border rounded" name="end_date" />
 					</div>
 
 						<table
