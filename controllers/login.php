@@ -11,7 +11,7 @@ $model->contraseña = $_POST['txtPassword'];
 $filaController = $model->Logear();
 
 if ($filaController > 0) {
-  echo '<h1 style="text-align:center; color:gray; display:block; margin-top:4rem">Bienvenido de Nuevo!</h1>';
+  echo '<h1> Bienvenido de nuevo </h1>';
   header('refresh:2; url=http://localhost/comprasPorInsumos/client/pages/main.html');
 
 } else {

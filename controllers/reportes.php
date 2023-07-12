@@ -14,5 +14,4 @@ if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
 } else {
   $rows = $model->fetchData();
 }
-
 echo json_encode($rows);

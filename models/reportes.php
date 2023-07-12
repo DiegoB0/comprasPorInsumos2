@@ -8,18 +8,18 @@ class Reporte
 
 
 
-	function __construct()
-	{
+  function __construct()
+  {
 
-	}
+  }
 
-	function fetchData()
-	{
-		$conexion = new Conexion();
-		$db = $conexion->con();
+  function fetchData()
+  {
+    $conexion = new Conexion();
+    $db = $conexion->con();
 
-		try {
-			$query = $db->prepare("SELECT i.descripcion,
+    try {
+      $query = $db->prepare("SELECT i.descripcion,
 	SUM(CASE
 	  WHEN m.costo > 0 AND m.cantidad > 0 AND m.idcompra IS NOT NULL THEN m.costo * m.cantidad
 	  ELSE 0
@@ -57,24 +57,24 @@ class Reporte
   LEFT JOIN comprasmovtos c ON i.idinsumo = c.idinsumo
   GROUP BY i.idinsumo, i.descripcion");
 
-			$query->execute();
+      $query->execute();
 
-			$fila = $query->fetchAll();
+      $fila = $query->fetchAll();
 
-			return $fila;
+      return $fila;
 
-		} catch (PDOException $e) {
-			echo "Error en la consulta->" . $e;
-		}
-	}
+    } catch (PDOException $e) {
+      echo "Error en la consulta->" . $e;
+    }
+  }
 
-	function date_range($start_date, $end_date)
-	{
-		$conexion = new Conexion();
-		$db = $conexion->con();
+  function date_range($start_date, $end_date)
+  {
+    $conexion = new Conexion();
+    $db = $conexion->con();
 
-		try {
-			$query = $db->prepare("SELECT i.descripcion,
+    try {
+      $query = $db->prepare("SELECT i.descripcion,
 	SUM(CASE
 	  WHEN m.costo > 0 AND m.cantidad > 0 AND m.idcompra IS NOT NULL THEN m.costo * m.cantidad
 	  ELSE 0
@@ -113,17 +113,16 @@ class Reporte
   WHERE m.fecha > '$start_date' AND m.fecha < '$end_date'
   GROUP BY i.idinsumo, i.descripcion");
 
-			$query->execute();
+      $query->execute();
 
-			$fila = $query->fetchAll();
+      $fila = $query->fetchAll();
 
-			return $fila;
-		} catch (PDOException $e) {
-			echo "Error en la consulta->" . $e;
-		}
+      return $fila;
+    } catch (PDOException $e) {
+      echo "Error en la consulta->" . $e;
+    }
 
 
 
-	}
-
+  }
 }
