@@ -1,11 +1,11 @@
 <?php
 
-require_once("../db/db.php");
+require_once('../db/loscorrales.php');
 
 class Model
 {
-  var $usuario;
-  var $contraseña;
+  var $email;
+  var $pass;
 
   function __construct()
   {
@@ -14,15 +14,16 @@ class Model
   function Logear()
   {
 
-    $conexion = new Conexion();
+    $conexion = new Corrales();
     $db = $conexion->con();
 
 
     try {
-      $consulta = $db->prepare("SELECT * FROM usuarios WHERE usuario=:parametro1 AND nombre=:parametro2");
+      $consulta = $db->prepare("SELECT * FROM usuarios WHERE 
+      email=:parametro1 AND pass=(SELECT dbo.fun_encriptar(:parametro2))");
 
-      $consulta->bindValue(':parametro1', $this->usuario);
-      $consulta->bindValue(':parametro2', $this->contraseña);
+      $consulta->bindValue(':parametro1', $this->email);
+      $consulta->bindValue(':parametro2', $this->pass);
 
       $consulta->execute();
 
