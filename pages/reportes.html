@@ -1,125 +1,92 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<!-- Required meta tags -->
-		<meta charset="utf-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1, shrink-to-fit=no"
-		/>
-		<link rel="shortcut icon" href="#" />
-		<title>Reporte de Compras por Insumo</title>
+<div class="ml-5">
+	<div>
+		<h1 class="text-center text-secondary mb-3 main-container">
+			Reporte de Compras por Insumo en Taquerías
+		</h1>
+	</div>
 
-		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css" />
-		<!-- CSS personalizado -->
-		<link rel="stylesheet" href="../assets/css/main.css" />
+	<!--Ejemplo tabla con DataTables-->
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="table-responsive">
+					<!-- Datepicker -->
 
-		<!--datables CSS básico-->
-		<link
-			rel="stylesheet"
-			type="text/css"
-			href="../libs/datatables/datatables.min.css"
-		/>
-		<!--datables estilo bootstrap 4 CSS-->
-		<link
-			rel="stylesheet"
-			type="text/css"
-			href="../libs/datatables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css"
-		/>
+					<div
+						class="input-daterange input-group mb-4 col-md-12"
+						id="datepicker"
+					>
+						<div class="col-md-6">
+							<div class="input-group mb-4">
+								<div class="input-group-prepend">
+									<span
+										class="input-group-text bg-info text-white"
+										id="basic-addon1"
+										><i class="fas fa-calendar-alt"></i
+									></span>
+								</div>
+								<input
+									type="text"
+									class="form-control datepicker"
+									placeholder="Fecha Inicial"
+									id="start_date"
+									readonly
+								/>
+							</div>
+						</div>
 
-		<!--font awesome con CDN-->
-		<link
-			rel="stylesheet"
-			href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
-			integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
-			crossorigin="anonymous"
-		/>
-	</head>
-
-	<body>
-		<header>
-			<h1 class="text-center text-secondary mt-3">
-				Reporte de Compras por Insumo en Taquerías
-			</h1>
-		</header>
-		<div style="height: 50px"></div>
-
-		<!--Ejemplo tabla con DataTables-->
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="table-responsive">
-						<table
-							id="example"
-							class="table table-striped table-bordered"
-							cellspacing="0"
-							width="100%"
-						>
-							<thead>
-								<tr>
-									<th>Insumo</th>
-									<th>Costo</th>
-									<th>Cantidad Comprada</th>
-									<th>Rendimiento</th>
-									<th>Cantidad Cocido</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Carne de res</td>
-									<td>120.00</td>
-									<td>15.00</td>
-									<td>0.63</td>
-									<td>9.38</td>
-								</tr>
-								<tr>
-									<td>Carne de puerco</td>
-									<td>120.00</td>
-									<td>15.00</td>
-									<td>0.63</td>
-									<td>9.38</td>
-								</tr>
-								<tr>
-									<td>Tacos al pastor</td>
-									<td>120.00</td>
-									<td>15.00</td>
-									<td>0.63</td>
-									<td>9.38</td>
-								</tr>
-								<tr>
-									<td>Coca colas</td>
-									<td>120.00</td>
-									<td>15.00</td>
-									<td>0.63</td>
-									<td>9.38</td>
-								</tr>
-							</tbody>
-						</table>
+						<div class="col-md-6">
+							<div class="input-group mb-4">
+								<div class="input-group-prepend">
+									<span
+										class="input-group-text bg-info text-white"
+										id="basic-addon1"
+										><i class="fas fa-calendar-alt"></i
+									></span>
+								</div>
+								<input
+									type="text"
+									class="form-control datepicker"
+									placeholder="Fecha Final"
+									id="end_date"
+									readonly
+								/>
+							</div>
+						</div>
 					</div>
+					<div class="col-md-6">
+						<div class="input-group mb-4">
+							<button class="btn btn-outline-info btn-sm" id="filter">
+								Filtrar
+							</button>
+							<button class="btn btn-outline-warning btn-sm" id="reset">
+								Resetear
+							</button>
+						</div>
+					</div>
+					<!-- Inicia la tabla -->
+					<table
+						id="example"
+						class="table table-striped table-bordered estilos-tabla"
+						cellspacing="0"
+						width="100%"
+					>
+						<thead>
+							<tr>
+								<th>Insumo</th>
+								<th>Costo</th>
+								<th>Cantidad Comprada</th>
+								<th>Rendimiento</th>
+								<th>Cantidad Cocido</th>
+								<th>Ventas</th>
+								<th>Inventario Final</th>
+							</tr>
+						</thead>
+					</table>
 				</div>
 			</div>
 		</div>
+	</div>
+</div>
 
-		<!-- jQuery, Popper.js, Bootstrap JS -->
-		<script src="../libs/jquery/jquery-3.3.1.min.js"></script>
-		<script src="../libs/popper/popper.min.js"></script>
-		<script src="../libs/bootstrap/js/bootstrap.min.js"></script>
-
-		<!-- datatables JS -->
-		<script
-			type="text/javascript"
-			src="../libs/datatables/datatables.min.js"
-		></script>
-
-		<!-- para usar botones en datatables JS -->
-		<script src="../libs/datatables/Buttons-1.5.6/js/dataTables.buttons.min.js"></script>
-		<script src="../libs/datatables/JSZip-2.5.0/jszip.min.js"></script>
-		<script src="../libs/datatables/pdfmake-0.1.36/pdfmake.min.js"></script>
-		<script src="../libs/datatables/pdfmake-0.1.36/vfs_fonts.js"></script>
-		<script src="../libs/datatables/Buttons-1.5.6/js/buttons.html5.min.js"></script>
-
-		<!-- código JS propio-->
-		<script type="text/javascript" src="../assets/js/main.js"></script>
-	</body>
-</html>
+<script type="text/javascript" src="../assets/js/main.js"></script>

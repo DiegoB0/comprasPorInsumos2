@@ -28,4 +28,17 @@ class Conexion
 
     return $conexion;
   }
+
+  function con2()
+  {
+    try {
+      $cadenacnx = "";
+      $user = "";
+      $password = "";
+
+      $conexion = "";
+    } catch (PDOException $error) {
+      echo "Ocurrio un error: $error";
+    }
+  }
 }

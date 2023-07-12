@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Usuarios</title>
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="../libs/bootstrap/css/bootstrap.min.css" />
+
+		<!-- CSS personalizado -->
+		<link rel="stylesheet" href="../assets/css/reportes.css" />
+		<link rel="stylesheet" href="../assets/css/sidebar.css" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<link rel="stylesheet" href="../assets/css/buttons.css" />
+
+		<!--datables CSS básico-->
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="../libs/datatables/datatables.min.css"
+		/>
+		<!--datables estilo bootstrap 4 CSS-->
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="../libs/datatables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css"
+		/>
+
+		<!-- Datepicker style -->
+		<link
+			rel="stylesheet"
+			href="../libs/bootstrap-datepicker/css/bootstrap-datepicker.css"
+		/>
+
+		<!--font awesome con CDN-->
+		<link
+			rel="stylesheet"
+			href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+			integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+			crossorigin="anonymous"
+		/>
+	</head>
+
+	<body>
+		<div class="container-index">
+			<!-- Sidebar -->
+			<div class="sidebar">
+				<div class="sidebar-logo">
+					<img src="../assets/img/corrales.png" alt="" />
+				</div>
+				<ul class="sidebar-menu">
+					<li>
+						<a href="#" class="sidebar-link active" data-page="home"
+							><i class="fas fa-home"></i> <span>Inicio</span></a
+						>
+					</li>
+
+					<li>
+						<a href="#" class="sidebar-link" data-page="reportes"
+							><i class="fas fa-chart-bar"></i><span>Reportes</span></a
+						>
+					</li>
+					<li>
+						<a href="#" class="sidebar-link" data-page="usuarios"
+							><i class="fas fa-users"></i><span>Usuarios</span></a
+						>
+					</li>
+					<li>
+						<a href="#" onclick="salir()"
+							><i class="fas fa-power-off"></i> <span>Cerrar Sesion</span></a
+						>
+					</li>
+					<li class="sidebar-toggle">
+						<button class="sidebar-toggle-button" id="sidebar-toggle">
+							<i class="fas fa-chevron-left"></i
+							><span class="toggle-text">Ocultar</span>
+						</button>
+					</li>
+				</ul>
+			</div>
+
+			<!-- Contenido de las paginas -->
+			<div class="content">
+				<div class="main-container">
+					<h2 class="text-center text-secondary">¡Bienvenido de nuevo!</h2>
+					<br />
+					<h1 class="text-center text-secondary">¿Que desea hacer?</h1>
+				</div>
+
+				<div class="container text-center mt-5 buttons-container">
+					<div class="buttons mt-5">
+						<!-- HTML !-->
+						<a href="#" class="button-52" data-page="reportes">Ir a reportes</a>
+					</div>
+					<div class="mt-5">
+						<a href="#" class="button-52" data-page="usuarios">Ir a Usuarios</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- jQuery, Popper.js, Bootstrap JS -->
+		<script src="../libs/popper/popper.min.js"></script>
+		<script src="../libs/jquery/jquery-3.3.1.min.js"></script>
+
+		<!-- datatables JS -->
+		<script
+			type="text/javascript"
+			src="../libs/datatables/datatables.min.js"
+		></script>
+
+		<!-- datepicker JS -->
+		<script src="../libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
+		<!-- para usar botones en datatables JS -->
+		<script src="../libs/datatables/Buttons-1.5.6/js/dataTables.buttons.min.js"></script>
+		<script src="../libs/datatables/JSZip-2.5.0/jszip.min.js"></script>
+		<script src="../libs/datatables/pdfmake-0.1.36/pdfmake.min.js"></script>
+		<script src="../libs/datatables/pdfmake-0.1.36/vfs_fonts.js"></script>
+		<script src="../libs/datatables/Buttons-1.5.6/js/buttons.html5.min.js"></script>
+
+		<!-- código JS propio-->
+		<script type="text/javascript" src="../assets/js/sidebar.js"></script>
+		<script type="text/javascript" src="../assets/js/loadpage.js"></script>
+	</body>
+</html>
