@@ -10,21 +10,20 @@ class Conexion
 
   function con()
   {
-    $db = "softrestaurant10pro";
+
 
     try {
 
-        //cambiar al propio info de server
       $cadenaCnx = "sqlsrv: Server=ROMAN\NATIONALSOFT2023;Database=softrestaurant10pro";
       $user = "sa";
-      $password = "estadias"; //cambiar al propio
+      $password = "estadias";
 
       $conexion = new PDO($cadenaCnx, $user, $password);
 
-      //echo "conexión lograda:D";
 
-    } catch (PDOException $nono) {
-      echo "no se hizo :( a $db, error: $nono";
+
+    } catch (PDOException $error) {
+      echo "Ocurrió un error: $error";
     }
 
     return $conexion;
