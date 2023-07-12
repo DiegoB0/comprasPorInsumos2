@@ -1,0 +1,15 @@
+/*estilos para la tabla*/
+.estilos-tabla th {
+	background-color: #f18d0b !important;
+	color: white;
+}
+
+.estilos-tabla > tbody > tr > td {
+	vertical-align: middle !important;
+}
+
+/*para alinear los botones y cuadro de busqueda*/
+.btn-group,
+.btn-group-vertical {
+	position: absolute !important;
+}
