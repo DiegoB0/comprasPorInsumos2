@@ -11,12 +11,12 @@ $model->contraseña = $_POST['txtPassword'];
 $filaController = $model->Logear();
 
 if ($filaController > 0) {
-  echo '<h1> Bienvenido de nuevo </h1>';
-  header('refresh:2; url=http://localhost/comprasPorInsumos2/pages/reportes.php');
+  echo '<h1 style="text-align:center; color:gray; display:block; margin-top:4rem">Bienvenido de Nuevo!</h1>';
+  header('refresh:2; url=http://localhost/comprasPorInsumos/client/pages/reportes.php');
 
 } else {
 
-  echo '<h1> Usuario o contraseña incorrectos </h1>';
+  echo '<h1 style="text-align:center; color:gray; display:block; margin-top:4rem"> Usuario o contraseña incorrectos </h1><br><img src="../assets/img/primo_triste.gif" style="display: block; margin-left: auto; margin-right: auto; ">';
 
-  header('refresh:2; url=http://localhost/comprasPorInsumos2/index.php');
+  header('refresh:2; url=http://localhost/comprasPorInsumos/client/');
 }
