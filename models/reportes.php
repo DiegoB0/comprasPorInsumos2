@@ -110,7 +110,7 @@ class Reporte
   FROM insumos i
   LEFT JOIN movsinv m ON i.idinsumo = m.idinsumo
   LEFT JOIN comprasmovtos c ON i.idinsumo = c.idinsumo
-  WHERE m.fecha > '$start_date' AND m.fecha < '$end_date'
+  WHERE m.fecha > '$start_date' AND m.fecha < DATEADD(day, 1, '$end_date')
   GROUP BY i.idinsumo, i.descripcion");
 
       $query->execute();
