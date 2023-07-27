@@ -5,8 +5,8 @@ require_once '../models/login.php';
 //Instancia de la clase
 $model = new Model();
 
-$model->usuario = $_POST['txtUsuario'];
-$model->contraseña = $_POST['txtPassword'];
+$model->email = $_POST['txtUsuario'];
+$model->pass = $_POST['txtPassword'];
 
 $filaController = $model->Logear();
 
