@@ -2,9 +2,7 @@ function fetch(proveedores) {
 	$.ajax({
 		url: '../controllers/reportes.php',
 		type: 'GET',
-		data: {
-			proveedores: 'proveedores'
-		},
+		data: { proveedores: 'proveedores' },
 		dataType: 'json',
 		success: function (data) {
 			//Datatable
@@ -43,7 +41,7 @@ function fetch(proveedores) {
 					{ data: 'descripcion', title: 'Insumo' },
 					{ data: 'costo', title: 'Costo' },
 					{ data: 'cantidad', title: 'Cantidad' },
-                    { data: 'unidad', title: 'Unidad' },
+					{ data: 'unidad', title: 'Unidad' },
 				],
 			});
 		},

@@ -15,7 +15,7 @@ class Model
   {
 
     $conexion = new Conexion();
-    $db = $conexion->con();
+    $db = $conexion->conCorrales();
 
 
     try {
