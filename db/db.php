@@ -11,12 +11,11 @@ class Conexion
   function con()
   {
 
-
     try {
 
-      $cadenaCnx = "sqlsrv: Server=KIM\NATIONALSOFT2023;Database=softrestaurant10pro";
+      $cadenaCnx = "sqlsrv: Server=ROMAN\NATIONALSOFT2023;Database=softrestaurant10pro";
       $user = "sa";
-      $password = "National09";
+      $password = "estadias";
 
       $conexion = new PDO($cadenaCnx, $user, $password);
 
@@ -29,16 +28,20 @@ class Conexion
     return $conexion;
   }
 
-  function con2()
+  function conCorrales()
   {
     try {
-      $cadenacnx = "";
-      $user = "";
-      $password = "";
 
-      $conexion = "";
+      $cadenaCnx = "sqlsrv: Server=ROMAN\NATIONALSOFT2023;Database=loscorrales";
+      $user = "sa";
+      $password = "estadias";
+
+      $conexion = new PDO($cadenaCnx, $user, $password);
+
     } catch (PDOException $error) {
-      echo "Ocurrio un error: $error";
+      echo "Ocurrió un error: $error";
     }
+
+    return $conexion;
   }
 }
