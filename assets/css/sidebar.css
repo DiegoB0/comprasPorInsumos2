@@ -21,7 +21,7 @@
 }
 
 .sidebar-logo {
-	padding: 20px;
+	padding: 10px;
 	font-size: 24px;
 	text-align: center;
 }
@@ -29,10 +29,10 @@
 .sidebar-menu {
 	list-style: none;
 	padding: 0;
-	margin: 20px 0;
+	margin: 10px 0;
 }
 
-.sidebar-menu li {
+.sidebar-menu .sidebar-li {
 	margin-bottom: 10px;
 }
 
@@ -106,4 +106,30 @@
 
 .sidebar-shrunk .sidebar-toggle-button i.fa-chevron-left {
 	transform: rotate(180deg) !important;
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+	display: none;
+	height: 100%;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.dropdown-menu.open {
+	display: block;
+}
+
+.dropdown-menu.open li a {
+	background: #b34b50;
+	padding: 10px 20px;
+	opacity: 1;
+	transition: opacity 0.3s;
+	border: 1px solid transparent;
+}
+
+.dropdown-menu.open li a:hover {
+	background: #e0646b;
+	opacity: 1;
 }

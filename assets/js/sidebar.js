@@ -22,3 +22,16 @@ sidebarLinks.forEach((link) => {
 		e.target.classList.add('active');
 	});
 });
+
+// Agregar evento de clic a los enlaces que tienen una clase 'dropdown-toggle'
+const dropdownToggleLinks = document.querySelectorAll(
+	'.sidebar-link.dropdown-toggle'
+);
+dropdownToggleLinks.forEach((toggleLink) => {
+	toggleLink.addEventListener('click', (e) => {
+		e.preventDefault();
+		const dropdownMenu = toggleLink.nextElementSibling;
+		dropdownMenu.classList.toggle('open');
+		toggleLink.classList.toggle('open');
+	});
+});

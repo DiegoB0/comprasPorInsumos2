@@ -1,11 +1,8 @@
-//Obtener los datos de los inputs de fecha
-function fetch(proveedores) {
+function fetch(usuarios) {
 	$.ajax({
-		url: '../controllers/reportes_proveedores.php',
+		url: '../controllers/usuarios.php',
 		type: 'GET',
-		data: {
-			
-		},
+		data: { usuarios: 'usuarios' },
 		dataType: 'json',
 		success: function (data) {
 			//Datatable
@@ -37,14 +34,11 @@ function fetch(proveedores) {
 				],
 				responsive: true,
 				columns: [
-					{ data: 'idcompra', title: 'Compra' },
-					{ data: 'nombre', title: 'Proveedor' },
-					{ data: 'fechaaplicacion', title: 'Fecha' },
-					{ data: 'idinsumo', title: 'ID Insumo' },
-					{ data: 'descripcion', title: 'Insumo' },
-					{ data: 'costo', title: 'Costo' },
-					{ data: 'cantidad', title: 'Cantidad' },
-                    { data: 'unidad', title: 'Unidad' },
+					{ data: 'id', title: 'Id Usuario' },
+					{ data: 'nombre', title: 'Nombre' },
+					{ data: 'pass', title: 'Clave' },
+					{ data: 'email', title: 'E-mail' },
+					{ data: 'privilegio', title: 'Privilegio' },
 				],
 			});
 		},
