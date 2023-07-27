@@ -5,13 +5,13 @@ require_once '../models/login.php';
 //Instancia de la clase
 $model = new Model();
 
-$model->email = $_POST['email'];
-$model->pass = $_POST['pass'];
+$model->email = $_POST['txtUsuario'];
+$model->pass = $_POST['txtPassword'];
 
 $filaController = $model->Logear();
 
 if ($filaController > 0) {
-  echo '<h1> Bienvenido de nuevo </h1>';
+  echo '<h1 style="text-align:center; color:gray; display:block; margin-top:4rem"> Bienvenido de nuevo </h1>';
   header('refresh:2; url=http://localhost/comprasPorInsumos2/pages/main.html');
 
 } else {
