@@ -1,7 +1,6 @@
 <?php
 
-require_once('../db/loscorrales.php');
-
+require_once('../db/db.php');
 
 class Registro
 {
@@ -13,8 +12,8 @@ class Registro
 
 	function InsertData()
 	{
-		$conexion = new Corrales();
-		$db = $conexion->con();
+		$conexion = new Conexion();
+		$db = $conexion->conCorrales();
 
 		try {
 
@@ -24,9 +23,8 @@ class Registro
 			$priv=$_POST["priv"];
 
 			$consulta = $db->prepare("INSERT INTO usuarios(nombre, pass, email, privilegio) 
-			VALUES (:nombre, (SELECT dbo.fun_encriptar(:pass)), :email, :priv)");
-			//$consulta = $db->prepare("INSERT INTO usuarios(nombre, pass, email, privilegio) 
-			//VALUES (:nombre, :pass, :email, :priv)");
+			VALUES (:nombre, (:nombre, CONVERT(binary, :pass), :email, :priv)");
+
 			$consulta->bindParam(':nombre', $nombre, PDO::PARAM_STR);
 			$consulta->bindParam(':pass', $pass, PDO::PARAM_STR);
 			$consulta->bindParam(':email', $email, PDO::PARAM_STR);
@@ -34,15 +32,12 @@ class Registro
 
 			$consulta->execute();
 
-			$fila = $consulta->fetch();
-
-			return $fila;
+			return true;
 
 		} catch (PDOException $e) {
-			echo "Error en la consulta->" . $e;
+			echo "Error en la consulta: " . $e->getMessage();
+			return false;
 		}
 	}
-
 }
-
 ?>

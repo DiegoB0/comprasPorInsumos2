@@ -1,6 +1,6 @@
 <?php
 
-require_once('../db/loscorrales.php');
+require_once('../db/db.php');
 
 class Model
 {
@@ -14,7 +14,7 @@ class Model
   function Logear()
   {
 
-    $conexion = new Corrales();
+    $conexion = new Conexion();
     $db = $conexion->con();
 
 
