@@ -1,0 +1,72 @@
+<div class="ml-5">
+	<div class="mb-lg-5">
+		<h1 class="text-center text-secondary mb-3 main-container">
+			Nuevo Usuario
+		</h1>
+	</div>
+	<div class="page-content mt-5">
+		<div class="form-v9-content" style="background-color: #fff">
+			<form
+				class="form-detail"
+				action="../controllers/registro.php"
+				method="POST"
+			>
+				<div class="form-row-total">
+					<div class="form-row">
+						<input
+							type="text"
+							name="nombre"
+							id="nombre"
+							class="input-text"
+							placeholder="Nombre"
+							required
+						/>
+					</div>
+					<div class="form-row">
+						<input
+							type="text"
+							name="email"
+							id="email"
+							class="input-text"
+							placeholder="Correo electrónico"
+							required
+							pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}"
+						/>
+					</div>
+				</div>
+				<div class="form-row-total">
+					<div class="form-row">
+						<select
+							name="priv"
+							id="priv"
+							class="input-text"
+							style="width: 108%"
+							required
+						>
+							<option value="estandar">Estándar</option>
+							<option value="admin">Administrador</option>
+						</select>
+					</div>
+					<div class="form-row">
+						<input
+							type="password"
+							name="pass"
+							id="pass"
+							class="input-text"
+							placeholder="Contraseña"
+							required
+						/>
+					</div>
+				</div>
+				<div class="form-row-last">
+					<input
+						type="submit"
+						name="registrar"
+						class="register"
+						value="REGISTRAR"
+					/>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

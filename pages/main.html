@@ -10,9 +10,10 @@
 
 		<!-- CSS personalizado -->
 		<link rel="stylesheet" href="../assets/css/reportes.css" />
-		<link rel="stylesheet" href="../assets/css/sidebar.css" />
 		<link rel="stylesheet" href="../assets/css/main.css" />
 		<link rel="stylesheet" href="../assets/css/buttons.css" />
+		<link rel="stylesheet" href="../assets/css/registro.css" />
+		<link rel="stylesheet" href="../assets/css/sidebar.css" />
 
 		<!--datables CSS básico-->
 		<link
@@ -50,27 +51,69 @@
 					<img src="../assets/img/corrales.png" alt="" />
 				</div>
 				<ul class="sidebar-menu">
-					<li>
-						<a href="#" class="sidebar-link active" data-page="home"
-							><i class="fas fa-home"></i> <span>Inicio</span></a
-						>
+					<li class="sidebar-li">
+						<a href="#" class="sidebar-link active" data-page="home">
+							<i class="fas fa-home"></i> <span>Inicio</span>
+						</a>
 					</li>
+					<li class="dropdown sidebar-li">
+						<a
+							href="#"
+							class="sidebar-link dropdown-toggle"		
+						>
+							<i class="fas fa-chart-bar"></i><span>Reportes</span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="#" data-page="r.insumos">
+									<i class="fas fa-shopping-basket"></i>
+									</i><span>Reporte de insumos</span>
+								</a>
+							</li>
+							<li>
+								<a href="#" data-page="r.fechas"
+									><i class="fas fa-calendar-alt"></i>
 
-					<li>
-						<a href="#" class="sidebar-link" data-page="reportes"
-							><i class="fas fa-chart-bar"></i><span>Reportes</span></a
-						>
+									<span>Reporte de fechas</span>
+								</a>
+							</li>
+							<li>
+								<a href="#" data-page="r.proovedores"
+									><i class="fas fa-truck"></i>
+									<span>Reporte de proveedores</span>
+								</a>
+							</li>
+						</ul>
 					</li>
-					<li>
-						<a href="#" class="sidebar-link" data-page="usuarios"
-							><i class="fas fa-users"></i><span>Usuarios</span></a
-						>
+					<li class="dropdown sidebar-li">
+						<a href="#" class="sidebar-link dropdown-toggle">
+							<i class="fas fa-users"></i><span>Usuarios</span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="#" data-page="u.administrar">
+									<i class="fas fa-user-cog"></i>
+									</i><span>Administrar Usuarios</span>
+								</a>
+							</li>
+							<li>
+								<a href="#" data-page="u.nuevo"
+									><i class="fas fa-user-plus"></i>
+
+									<span>Nuevo Usuario</span>
+								</a>
+							</li>	
+						</ul>
 					</li>
-					<li>
-						<a href="#" onclick="salir()"
-							><i class="fas fa-power-off"></i> <span>Cerrar Sesion</span></a
-						>
+					<li class="sidebar-li">
+						<a href="#" onclick="salir()">
+							<i class="fas fa-power-off"></i> <span>Cerrar Sesion</span>
+						</a>
 					</li>
+					<br>
+					<br>
+					<br>
+					<br>
 					<li class="sidebar-toggle">
 						<button class="sidebar-toggle-button" id="sidebar-toggle">
 							<i class="fas fa-chevron-left"></i
@@ -103,6 +146,7 @@
 		<!-- jQuery, Popper.js, Bootstrap JS -->
 		<script src="../libs/popper/popper.min.js"></script>
 		<script src="../libs/jquery/jquery-3.3.1.min.js"></script>
+		<script src="../libs/bootstrap/js/bootstrap.min.js"></script>
 
 		<!-- datatables JS -->
 		<script
