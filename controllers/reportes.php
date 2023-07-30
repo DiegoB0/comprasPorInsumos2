@@ -15,7 +15,7 @@ if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
   if (isset($_GET['proveedores'])) {
     $rows = $model->fetchProveedores();
   } else {
-    $rows = $model->fetchInsumos();
+    $rows = $model->fetchFechas();
   }
 }
 
