@@ -9,7 +9,7 @@ $('#end_date').datepicker({
 //Obtener los datos de los inputs de fecha
 function fetch(start_date, end_date) {
 	$.ajax({
-		url: '../controllers/reportes.php',
+		url: '../controllers/r.fechas.php',
 		type: 'POST',
 		data: {
 			start_date: start_date,
@@ -46,6 +46,7 @@ function fetch(start_date, end_date) {
 				],
 				responsive: true,
 				columns: [
+					{ data: 'fecha', title: 'Fecha' },
 					{ data: 'descripcion', title: 'Insumo' },
 					{ data: 'costo', title: 'Costo' },
 					{ data: 'cantidad_comprada', title: 'Cantidad Comprada' },

@@ -1,0 +1,92 @@
+<div class="ml-5">
+	<div>
+		<h1 class="text-center text-secondary mb-3 main-container">
+			Reporte de Compras por Insumos en Taquerías
+		</h1>
+	</div>
+
+	<!--Ejemplo tabla con DataTables-->
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="table-responsive">
+					<!-- Datepicker -->
+
+					<div
+						class="input-daterange input-group mb-4 col-md-12"
+						id="datepicker"
+					>
+						<div class="col-md-6">
+							<div class="input-group mb-4">
+								<div class="input-group-prepend">
+									<span
+										class="input-group-text bg-info text-white"
+										id="basic-addon1"
+										><i class="fas fa-calendar-alt"></i
+									></span>
+								</div>
+								<input
+									type="text"
+									class="form-control datepicker"
+									placeholder="Fecha Inicial"
+									id="start_date"
+									readonly
+								/>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="input-group mb-4">
+								<div class="input-group-prepend">
+									<span
+										class="input-group-text bg-info text-white"
+										id="basic-addon1"
+										><i class="fas fa-calendar-alt"></i
+									></span>
+								</div>
+								<input
+									type="text"
+									class="form-control datepicker"
+									placeholder="Fecha Final"
+									id="end_date"
+									readonly
+								/>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="input-group mb-4">
+							<button class="btn btn-outline-info btn-sm" id="filter">
+								Filtrar
+							</button>
+							<button class="btn btn-outline-warning btn-sm" id="reset">
+								Resetear
+							</button>
+						</div>
+					</div>
+					<!-- Inicia la tabla -->
+					<table
+						id="example"
+						class="table table-striped table-bordered estilos-tabla"
+						cellspacing="0"
+						width="100%"
+					>
+						<thead>
+							<tr>
+								<th>Insumo</th>
+								<th>Costo</th>
+								<th>Cantidad Comprada</th>
+								<th>Rendimiento</th>
+								<th>Cantidad Cocido</th>
+								<th>Ventas</th>
+								<th>Inventario Final</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="../assets/js/main.js"></script>
