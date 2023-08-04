@@ -47,6 +47,7 @@ function fetch(start_date, end_date) {
 				responsive: true,
 				columns: [
 					{ data: 'fecha', title: 'Fecha' },
+					{ data: 'dia_semana', title: 'Día' },
 					{ data: 'descripcion', title: 'Insumo' },
 					{ data: 'costo', title: 'Costo' },
 					{ data: 'cantidad_comprada', title: 'Cantidad Comprada' },

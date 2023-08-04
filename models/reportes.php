@@ -18,49 +18,55 @@ class Reporte
 		try {
 			$query = $db->prepare(
 				"SELECT
-				CASE 
-					WHEN c.idinsumo >= '004001' AND c.idinsumo <= '004999' THEN '004001'
-					ELSE i.idinsumo
-				END AS idinsumo,
-				i.descripcion,
-				
-				CASE WHEN c.costo IS NOT NULL THEN c.costo ELSE 0 END AS costo,
-				
-				COALESCE(c.cantidad_comprada, 0) AS cantidad_comprada,
-				
-				CASE WHEN ip.rendimiento IS NOT NULL THEN	
-					(CASE WHEN c.costo = 13.33 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 1 AND idinsumo = 004001)
-						 WHEN c.costo = 80 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 6 AND idinsumo = 004001)
-						 WHEN c.costo = 230 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 24 AND idinsumo = 004001)
-					ELSE ip.rendimiento END)
-				ELSE 0 END AS rendimiento,
-				
-				COALESCE(m.cantidad_cocido, 0) AS cantidad_cocido,
-				COALESCE(m.ventas, 0) AS ventas,
-				COALESCE(m.inventario_final, 0) AS inventario_final
-			FROM insumos i
-			LEFT JOIN (
-				SELECT cm.costo,
 						CASE 
-							WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001'
-							ELSE idinsumo
+							WHEN c.idinsumo >= '004001' AND c.idinsumo <= '004999' THEN '004001'
+							ELSE i.idinsumo
 						END AS idinsumo,
-						SUM(cm.cantidad) AS cantidad_comprada
-			
-				FROM comprasmovtos cm LEFT JOIN compras c ON cm.idcompra = c.idcompra
-				GROUP BY costo,
-					CASE WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001' ELSE idinsumo END
-			) c ON i.idinsumo = c.idinsumo
-			LEFT JOIN (
-				SELECT 
-					idinsumo,
-					SUM(CASE WHEN cantidad > 0 THEN cantidad ELSE 0 END) AS cantidad_cocido,
-					SUM(CASE WHEN cantidad < 0 THEN cantidad ELSE 0 END) AS ventas,
-					SUM(cantidad) AS inventario_final
-				FROM movsinv
-				GROUP BY idinsumo
-			) m ON i.idinsumo = m.idinsumo
-			LEFT JOIN insumospresentaciones ip ON i.idinsumo = ip.idinsumo AND ip.idinsumospresentaciones = c.idinsumo");
+					
+						CASE WHEN m.fecha IS NOT NULL THEN FORMAT(CAST(m.fecha AS DATE), 'ddd') 
+							ELSE '-' END AS dia_semana,
+					
+						i.descripcion,
+						
+						CASE WHEN c.costo IS NOT NULL THEN c.costo ELSE 0 END AS costo,
+						
+						COALESCE(c.cantidad_comprada, 0) AS cantidad_comprada,
+						
+						CASE WHEN ip.rendimiento IS NOT NULL THEN	
+							(CASE WHEN c.costo = 13.33 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 1 AND idinsumo = 004001)
+								WHEN c.costo = 80 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 6 AND idinsumo = 004001)
+								WHEN c.costo = 230 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 24 AND idinsumo = 004001)
+							ELSE ip.rendimiento END)
+						ELSE 0 END AS rendimiento,
+						
+						COALESCE(m.cantidad_cocido, 0) AS cantidad_cocido,
+						COALESCE(m.ventas, 0) AS ventas,
+						COALESCE(m.inventario_final, 0) AS inventario_final
+					FROM insumos i
+					LEFT JOIN (
+						SELECT cm.costo,
+								CASE 
+									WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001'
+									ELSE idinsumo
+								END AS idinsumo,
+								SUM(cm.cantidad) AS cantidad_comprada
+					
+						FROM comprasmovtos cm LEFT JOIN compras c ON cm.idcompra = c.idcompra
+						GROUP BY costo,
+							CASE WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001' ELSE idinsumo END
+					) c ON i.idinsumo = c.idinsumo
+					LEFT JOIN (
+						SELECT 
+							idinsumo,
+							MAX(fecha) as fecha,
+							SUM(CASE WHEN cantidad > 0 THEN cantidad ELSE 0 END) AS cantidad_cocido,
+							SUM(CASE WHEN cantidad < 0 THEN cantidad ELSE 0 END) AS ventas,
+							SUM(cantidad) AS inventario_final
+						FROM movsinv
+						GROUP BY idinsumo
+					) m ON i.idinsumo = m.idinsumo
+					LEFT JOIN insumospresentaciones ip ON i.idinsumo = ip.idinsumo AND ip.idinsumospresentaciones = c.idinsumo
+				");
 
 			$query->execute();
 
@@ -81,51 +87,57 @@ class Reporte
 		try {
 			$query = $db->prepare(
 				"SELECT
-				CASE 
-					WHEN c.idinsumo >= '004001' AND c.idinsumo <= '004999' THEN '004001'
-					ELSE i.idinsumo
-				END AS idinsumo,
-				i.descripcion,
-				
-				CASE WHEN c.costo IS NOT NULL THEN c.costo ELSE 0 END AS costo,
-				
-				COALESCE(c.cantidad_comprada, 0) AS cantidad_comprada,
-				
-				CASE WHEN ip.rendimiento IS NOT NULL THEN	
-					(CASE WHEN c.costo = 13.33 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 1 AND idinsumo = 004001)
-						 WHEN c.costo = 80 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 6 AND idinsumo = 004001)
-						 WHEN c.costo = 230 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 24 AND idinsumo = 004001)
-					ELSE ip.rendimiento END)
-				ELSE 0 END AS rendimiento,
-				
-				COALESCE(m.cantidad_cocido, 0) AS cantidad_cocido,
-				COALESCE(m.ventas, 0) AS ventas,
-				COALESCE(m.inventario_final, 0) AS inventario_final
-			FROM insumos i
-			LEFT JOIN (
-				SELECT cm.costo,
 						CASE 
-							WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001'
-							ELSE idinsumo
+							WHEN c.idinsumo >= '004001' AND c.idinsumo <= '004999' THEN '004001'
+							ELSE i.idinsumo
 						END AS idinsumo,
-						SUM(cm.cantidad) AS cantidad_comprada
-			
-				FROM comprasmovtos cm LEFT JOIN compras c ON cm.idcompra = c.idcompra
-				WHERE c.fechaaplicacion >= '$start_date' AND c.fechaaplicacion <= DATEADD(day, 1, '$end_date')
-				GROUP BY costo,
-					CASE WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001' ELSE idinsumo END
-			) c ON i.idinsumo = c.idinsumo
-			LEFT JOIN (
-				SELECT 
-					idinsumo,
-					SUM(CASE WHEN cantidad > 0 THEN cantidad ELSE 0 END) AS cantidad_cocido,
-					SUM(CASE WHEN cantidad < 0 THEN cantidad ELSE 0 END) AS ventas,
-					SUM(cantidad) AS inventario_final
-				FROM movsinv
-				WHERE fecha >= '$start_date' AND fecha < DATEADD(day, 1, '$end_date')
-				GROUP BY idinsumo
-			) m ON i.idinsumo = m.idinsumo
-			LEFT JOIN insumospresentaciones ip ON i.idinsumo = ip.idinsumo AND ip.idinsumospresentaciones = c.idinsumo");
+					
+						CASE WHEN m.fecha IS NOT NULL THEN FORMAT(CAST(m.fecha AS DATE), 'ddd') 
+							ELSE '-' END AS dia_semana,
+					
+						i.descripcion,
+						
+						CASE WHEN c.costo IS NOT NULL THEN c.costo ELSE 0 END AS costo,
+						
+						COALESCE(c.cantidad_comprada, 0) AS cantidad_comprada,
+						
+						CASE WHEN ip.rendimiento IS NOT NULL THEN	
+							(CASE WHEN c.costo = 13.33 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 1 AND idinsumo = 004001)
+								WHEN c.costo = 80 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 6 AND idinsumo = 004001)
+								WHEN c.costo = 230 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 24 AND idinsumo = 004001)
+							ELSE ip.rendimiento END)
+						ELSE 0 END AS rendimiento,
+						
+						COALESCE(m.cantidad_cocido, 0) AS cantidad_cocido,
+						COALESCE(m.ventas, 0) AS ventas,
+						COALESCE(m.inventario_final, 0) AS inventario_final
+					FROM insumos i
+					LEFT JOIN (
+						SELECT cm.costo,
+								CASE 
+									WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001'
+									ELSE idinsumo
+								END AS idinsumo,
+								SUM(cm.cantidad) AS cantidad_comprada
+					
+						FROM comprasmovtos cm LEFT JOIN compras c ON cm.idcompra = c.idcompra
+						WHERE c.fechaaplicacion >= '$start_date' AND c.fechaaplicacion <= DATEADD(day, 1, '$end_date')
+						GROUP BY costo,
+							CASE WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001' ELSE idinsumo END
+					) c ON i.idinsumo = c.idinsumo
+					LEFT JOIN (
+						SELECT 
+							idinsumo,
+							MAX(fecha) as fecha,
+							SUM(CASE WHEN cantidad > 0 THEN cantidad ELSE 0 END) AS cantidad_cocido,
+							SUM(CASE WHEN cantidad < 0 THEN cantidad ELSE 0 END) AS ventas,
+							SUM(cantidad) AS inventario_final
+						FROM movsinv
+						WHERE fecha >= '$start_date' AND fecha < DATEADD(day, 1, '$end_date')
+						GROUP BY idinsumo
+					) m ON i.idinsumo = m.idinsumo
+					LEFT JOIN insumospresentaciones ip ON i.idinsumo = ip.idinsumo AND ip.idinsumospresentaciones = c.idinsumo
+				");
 
 			$query->execute();
 

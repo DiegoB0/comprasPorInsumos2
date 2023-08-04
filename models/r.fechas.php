@@ -113,6 +113,7 @@ class Reporte
 					LEFT JOIN insumos i ON c.idinsumo = i.idinsumo
 				)
 				SELECT fecha,
+					   FORMAT(CAST(fecha AS DATE), 'ddd') AS dia_semana,
 					   idinsumo,
 					   descripcion,
 					   cantidad,
@@ -129,7 +130,8 @@ class Reporte
 					   acumulado_por_dia,
 					   inventario_final
 				FROM CTE_Acumulado a
-				ORDER BY fecha, idinsumo");
+				ORDER BY fecha, idinsumo
+				");
 
 			$query->execute();
 
@@ -245,6 +247,7 @@ class Reporte
 					LEFT JOIN insumos i ON c.idinsumo = i.idinsumo
 				)
 				SELECT fecha,
+					   FORMAT(CAST(fecha AS DATE), 'ddd') AS dia_semana,
 					   idinsumo,
 					   descripcion,
 					   cantidad,
@@ -262,7 +265,8 @@ class Reporte
 					   inventario_final
 				FROM CTE_Acumulado a
 				WHERE fecha >= '$start_date' AND fecha < DATEADD(day, 1, '$end_date')
-				ORDER BY fecha, idinsumo");
+				ORDER BY fecha, idinsumo
+				");
 
 			$query->execute();
 
