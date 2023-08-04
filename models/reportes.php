@@ -185,4 +185,1119 @@ class Reporte
 		}
 
 	}
+
+
+	function fetchAsada()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 001001
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 001001
+				)i ON c.idinsumo = i.idinsumo
+				WHERE p.descripcion LIKE '%'+'ASADA'+'%'
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' CARNE ASADA ' as descripcion,
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 001001
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+			");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+
+	function fetchPastor()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 001003 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 001003 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE p.descripcion LIKE '%'+'PASTOR'+'%' --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' CARNE AL PASTOR ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 001003 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+			");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchArrachera()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 001002
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 001002
+				)i ON c.idinsumo = i.idinsumo
+				WHERE p.descripcion LIKE '%'+'ARRACHERA'+'%'
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' CARNE ARRACHERA ' as descripcion,
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 001002
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchAguacate()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003001 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 003001 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE c.idinsumo = 003001 --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' AGUACATE ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003001 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchAjo()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003002 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 003002 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE c.idinsumo = 003002 --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' AJO ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003002 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchApio()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003003 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 003003 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE c.idinsumo = 003003 --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' APIO ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003003 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchChile()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003004 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 003004 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE c.idinsumo = 003004 --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' CHILE ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003004 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchCebolla()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003005 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 003005 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE c.idinsumo = 003005 --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' CEBOLLA ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003005 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchTomate()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003006 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 003006 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE c.idinsumo = 003006 --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' TOMATE ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003006 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchPina()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003007 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 003007 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE c.idinsumo = 003007 --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' PIÑA ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003007 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchLimon()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003008 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 003008 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE c.idinsumo = 003008 --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' LIMÓN ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 003008 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchAzucar()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 005001 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 005001 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE c.idinsumo = 005001 --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' AZÚCAR ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 005001 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchRefrescos()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 004001 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 004001 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE c.idinsumo = 004001 --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' REFRESCOS ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 004001 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchMaiz()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 002001 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 002001 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE (p.descripcion LIKE '%'+'ASADA'+'%' 
+						OR p.descripcion LIKE '%'+'ARRACHERA'+'%' 
+						OR p.descripcion LIKE '%'+'PASTOR'+'%') AND c.idinsumo = 002001 --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' TORTILLA DE MAIZ POR PZ ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 002001 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchHarina()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 002002 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 002002 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE (p.descripcion LIKE '%'+'ASADA'+'%' 
+						OR p.descripcion LIKE '%'+'ARRACHERA'+'%' 
+						OR p.descripcion LIKE '%'+'PASTOR'+'%') AND c.idinsumo = 002002 --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' TORTILLA DE HARINA POR PZ ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 002002 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchPan()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 002003 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 002003 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE (p.descripcion LIKE '%'+'ASADA'+'%' 
+						OR p.descripcion LIKE '%'+'ARRACHERA'+'%' 
+						OR p.descripcion LIKE '%'+'PASTOR'+'%') AND c.idinsumo = 002003 --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' PAN DE AGUA POR PZ ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 002003 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchQueso()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				c.idproducto,
+				p.descripcion,
+				i.unidad,
+				c.cantidad AS porcion,
+				c.cantidad_vendida,
+		  
+				CASE WHEN c.cantidad IS NOT NULL 
+				THEN c.cantidad * c.cantidad_vendida ELSE 0 
+				END AS insumo_utilizado
+		  
+				FROM productos p
+				LEFT JOIN (
+					SELECT c.idproducto, c.cantidad, c.idinsumo, COUNT(c.idproducto) AS cantidad_vendida
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 006001 --CAMBIO AQUI
+					GROUP BY c.idproducto, c.cantidad, c.idinsumo
+				)c ON p.idproducto = c.idproducto
+				LEFT JOIN (
+					SELECT idinsumo, unidad FROM insumos WHERE idinsumo = 006001 --CAMBIO ACA
+				)i ON c.idinsumo = i.idinsumo
+				WHERE c.idinsumo = 006001 --OTRO CAMBIO AQUI
+				
+				
+				UNION ALL
+				
+				SELECT
+					' ' as idproducto,
+					' QUESO ' as descripcion, --CAMBIECITO AQUI
+					'TOTAL' as unidad,
+					SUM(cantidad) as porcion,
+					SUM(sum_productos) AS cantidad_vendida,
+					SUM(CASE WHEN cantidad IS NOT NULL
+						THEN cantidad * sum_productos ELSE 0
+						END) AS insumo_utilizado
+				FROM (
+					SELECT c.idproducto, COUNT(c.idproducto) AS sum_productos, c.cantidad
+					FROM costos c 
+					LEFT JOIN cheqdet cq ON c.idproducto = cq.idproducto
+					WHERE c.idinsumo = 006001 --ULTIMO CAMBIO ACA
+					GROUP BY c.idproducto, c.cantidad
+				) as dk
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+
 }

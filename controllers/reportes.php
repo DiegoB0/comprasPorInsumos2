@@ -19,5 +19,4 @@ if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
   }
 }
 
-
 echo json_encode($rows);
