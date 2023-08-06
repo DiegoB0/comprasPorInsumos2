@@ -23,8 +23,8 @@ class Reporte
 							ELSE i.idinsumo
 						END AS idinsumo,
 					
-						CASE WHEN m.fecha IS NOT NULL THEN FORMAT(CAST(m.fecha AS DATE), 'ddd') 
-							ELSE '-' END AS dia_semana,
+						CASE WHEN m.fecha IS NOT NULL THEN (SELECT DATENAME(WEEKDAY, m.fecha))
+		   					 ELSE '-' END AS dia_semana,
 					
 						i.descripcion,
 						
@@ -92,8 +92,8 @@ class Reporte
 							ELSE i.idinsumo
 						END AS idinsumo,
 					
-						CASE WHEN m.fecha IS NOT NULL THEN FORMAT(CAST(m.fecha AS DATE), 'ddd') 
-							ELSE '-' END AS dia_semana,
+						CASE WHEN m.fecha IS NOT NULL THEN (SELECT DATENAME(WEEKDAY, m.fecha))
+		   					 ELSE '-' END AS dia_semana,
 					
 						i.descripcion,
 						

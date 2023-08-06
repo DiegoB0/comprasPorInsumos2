@@ -247,7 +247,7 @@ class Reporte
 					LEFT JOIN insumos i ON c.idinsumo = i.idinsumo
 				)
 				SELECT fecha,
-					   FORMAT(CAST(fecha AS DATE), 'ddd') AS dia_semana,
+					   (SELECT DATENAME(WEEKDAY, fecha)) AS dia_semana,
 					   idinsumo,
 					   descripcion,
 					   cantidad,
