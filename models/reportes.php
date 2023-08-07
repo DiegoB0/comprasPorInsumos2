@@ -1311,5 +1311,544 @@ class Reporte
 
 	}
 
+	function fetchLunes2023()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				CASE 
+					WHEN c.idinsumo >= '004001' AND c.idinsumo <= '004999' THEN '004001'
+					ELSE i.idinsumo
+				END AS idinsumo,
+			
+				CASE 
+					WHEN m.fecha IS NOT NULL THEN (SELECT DATENAME(WEEKDAY, m.fecha))
+				ELSE '-' END AS dia_semana,
+			
+				i.descripcion,
+			
+				CASE WHEN c.costo IS NOT NULL THEN c.costo ELSE 0 END AS costo,
+				
+				COALESCE(c.cantidad_comprada, 0) AS cantidad_comprada,
+				
+				CASE WHEN ip.rendimiento IS NOT NULL THEN	
+					(CASE WHEN c.costo = 13.33 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 1 AND idinsumo = 004001)
+						 WHEN c.costo = 80 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 6 AND idinsumo = 004001)
+						 WHEN c.costo = 230 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 24 AND idinsumo = 004001)
+					ELSE ip.rendimiento END)
+				ELSE 0 END AS rendimiento,
+				
+				COALESCE(m.cantidad_cocido, 0) AS cantidad_cocido,
+				COALESCE(m.ventas, 0) AS ventas,
+				COALESCE(m.inventario_final, 0) AS inventario_final
+				FROM insumos i
+				LEFT JOIN (
+					SELECT cm.costo,
+							CASE 
+								WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001'
+								ELSE idinsumo
+							END AS idinsumo,
+							SUM(cm.cantidad) AS cantidad_comprada
+				
+					FROM comprasmovtos cm LEFT JOIN compras c ON cm.idcompra = c.idcompra
+					WHERE c.fechaaplicacion >= '20230101' AND c.fechaaplicacion <= DATEADD(day, 1, '20231231') 
+					AND DATEPART(WEEKDAY, c.fechaaplicacion) = 1
+					GROUP BY costo,
+						CASE WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001' ELSE idinsumo END
+				) c ON i.idinsumo = c.idinsumo
+				LEFT JOIN (
+					SELECT 
+						idinsumo,
+						MAX(fecha) as fecha,
+						SUM(CASE WHEN cantidad > 0 THEN cantidad ELSE 0 END) AS cantidad_cocido,
+						SUM(CASE WHEN cantidad < 0 THEN cantidad ELSE 0 END) AS ventas,
+						SUM(cantidad) AS inventario_final
+					FROM movsinv
+					WHERE fecha >= '20230101' AND fecha <= DATEADD(day, 1, '20231231')  AND
+					DATEPART(WEEKDAY, fecha) = 1
+					GROUP BY idinsumo
+				) m ON i.idinsumo = m.idinsumo
+				LEFT JOIN insumospresentaciones ip ON i.idinsumo = ip.idinsumo AND ip.idinsumospresentaciones = c.idinsumo
+				WHERE DATEPART(WEEKDAY, m.fecha) = 1 
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchMartes2023()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				CASE 
+					WHEN c.idinsumo >= '004001' AND c.idinsumo <= '004999' THEN '004001'
+					ELSE i.idinsumo
+				END AS idinsumo,
+			
+				CASE 
+					WHEN m.fecha IS NOT NULL THEN (SELECT DATENAME(WEEKDAY, m.fecha))
+				ELSE '-' END AS dia_semana,
+			
+				i.descripcion,
+			
+				CASE WHEN c.costo IS NOT NULL THEN c.costo ELSE 0 END AS costo,
+				
+				COALESCE(c.cantidad_comprada, 0) AS cantidad_comprada,
+				
+				CASE WHEN ip.rendimiento IS NOT NULL THEN	
+					(CASE WHEN c.costo = 13.33 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 1 AND idinsumo = 004001)
+						 WHEN c.costo = 80 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 6 AND idinsumo = 004001)
+						 WHEN c.costo = 230 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 24 AND idinsumo = 004001)
+					ELSE ip.rendimiento END)
+				ELSE 0 END AS rendimiento,
+				
+				COALESCE(m.cantidad_cocido, 0) AS cantidad_cocido,
+				COALESCE(m.ventas, 0) AS ventas,
+				COALESCE(m.inventario_final, 0) AS inventario_final
+				FROM insumos i
+				LEFT JOIN (
+					SELECT cm.costo,
+							CASE 
+								WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001'
+								ELSE idinsumo
+							END AS idinsumo,
+							SUM(cm.cantidad) AS cantidad_comprada
+				
+					FROM comprasmovtos cm LEFT JOIN compras c ON cm.idcompra = c.idcompra
+					WHERE c.fechaaplicacion >= '20230101' AND c.fechaaplicacion <= DATEADD(day, 1, '20231231') 
+					AND DATEPART(WEEKDAY, c.fechaaplicacion) = 2 ---AHI
+					GROUP BY costo,
+						CASE WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001' ELSE idinsumo END
+				) c ON i.idinsumo = c.idinsumo
+				LEFT JOIN (
+					SELECT 
+						idinsumo,
+						MAX(fecha) as fecha,
+						SUM(CASE WHEN cantidad > 0 THEN cantidad ELSE 0 END) AS cantidad_cocido,
+						SUM(CASE WHEN cantidad < 0 THEN cantidad ELSE 0 END) AS ventas,
+						SUM(cantidad) AS inventario_final
+					FROM movsinv
+					WHERE fecha >= '20230101' AND fecha <= DATEADD(day, 1, '20231231')  AND
+					DATEPART(WEEKDAY, fecha) = 2 ---POR ACA
+					GROUP BY idinsumo
+				) m ON i.idinsumo = m.idinsumo
+				LEFT JOIN insumospresentaciones ip ON i.idinsumo = ip.idinsumo AND ip.idinsumospresentaciones = c.idinsumo
+				WHERE DATEPART(WEEKDAY, m.fecha) = 2 
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchMier2023()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				CASE 
+					WHEN c.idinsumo >= '004001' AND c.idinsumo <= '004999' THEN '004001'
+					ELSE i.idinsumo
+				END AS idinsumo,
+			
+				CASE 
+					WHEN m.fecha IS NOT NULL THEN (SELECT DATENAME(WEEKDAY, m.fecha))
+				ELSE '-' END AS dia_semana,
+			
+				i.descripcion,
+			
+				CASE WHEN c.costo IS NOT NULL THEN c.costo ELSE 0 END AS costo,
+				
+				COALESCE(c.cantidad_comprada, 0) AS cantidad_comprada,
+				
+				CASE WHEN ip.rendimiento IS NOT NULL THEN	
+					(CASE WHEN c.costo = 13.33 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 1 AND idinsumo = 004001)
+						 WHEN c.costo = 80 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 6 AND idinsumo = 004001)
+						 WHEN c.costo = 230 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 24 AND idinsumo = 004001)
+					ELSE ip.rendimiento END)
+				ELSE 0 END AS rendimiento,
+				
+				COALESCE(m.cantidad_cocido, 0) AS cantidad_cocido,
+				COALESCE(m.ventas, 0) AS ventas,
+				COALESCE(m.inventario_final, 0) AS inventario_final
+				FROM insumos i
+				LEFT JOIN (
+					SELECT cm.costo,
+							CASE 
+								WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001'
+								ELSE idinsumo
+							END AS idinsumo,
+							SUM(cm.cantidad) AS cantidad_comprada
+				
+					FROM comprasmovtos cm LEFT JOIN compras c ON cm.idcompra = c.idcompra
+					WHERE c.fechaaplicacion >= '20230101' AND c.fechaaplicacion <= DATEADD(day, 1, '20231231') 
+					AND DATEPART(WEEKDAY, c.fechaaplicacion) = 3 ---AHI
+					GROUP BY costo,
+						CASE WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001' ELSE idinsumo END
+				) c ON i.idinsumo = c.idinsumo
+				LEFT JOIN (
+					SELECT 
+						idinsumo,
+						MAX(fecha) as fecha,
+						SUM(CASE WHEN cantidad > 0 THEN cantidad ELSE 0 END) AS cantidad_cocido,
+						SUM(CASE WHEN cantidad < 0 THEN cantidad ELSE 0 END) AS ventas,
+						SUM(cantidad) AS inventario_final
+					FROM movsinv
+					WHERE fecha >= '20230101' AND fecha <= DATEADD(day, 1, '20231231')  AND
+					DATEPART(WEEKDAY, fecha) = 3 ---POR ACA
+					GROUP BY idinsumo
+				) m ON i.idinsumo = m.idinsumo
+				LEFT JOIN insumospresentaciones ip ON i.idinsumo = ip.idinsumo AND ip.idinsumospresentaciones = c.idinsumo
+				WHERE DATEPART(WEEKDAY, m.fecha) = 3 
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchJueves2023()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				CASE 
+					WHEN c.idinsumo >= '004001' AND c.idinsumo <= '004999' THEN '004001'
+					ELSE i.idinsumo
+				END AS idinsumo,
+			
+				CASE 
+					WHEN m.fecha IS NOT NULL THEN (SELECT DATENAME(WEEKDAY, m.fecha))
+				ELSE '-' END AS dia_semana,
+			
+				i.descripcion,
+			
+				CASE WHEN c.costo IS NOT NULL THEN c.costo ELSE 0 END AS costo,
+				
+				COALESCE(c.cantidad_comprada, 0) AS cantidad_comprada,
+				
+				CASE WHEN ip.rendimiento IS NOT NULL THEN	
+					(CASE WHEN c.costo = 13.33 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 1 AND idinsumo = 004001)
+						 WHEN c.costo = 80 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 6 AND idinsumo = 004001)
+						 WHEN c.costo = 230 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 24 AND idinsumo = 004001)
+					ELSE ip.rendimiento END)
+				ELSE 0 END AS rendimiento,
+				
+				COALESCE(m.cantidad_cocido, 0) AS cantidad_cocido,
+				COALESCE(m.ventas, 0) AS ventas,
+				COALESCE(m.inventario_final, 0) AS inventario_final
+				FROM insumos i
+				LEFT JOIN (
+					SELECT cm.costo,
+							CASE 
+								WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001'
+								ELSE idinsumo
+							END AS idinsumo,
+							SUM(cm.cantidad) AS cantidad_comprada
+				
+					FROM comprasmovtos cm LEFT JOIN compras c ON cm.idcompra = c.idcompra
+					WHERE c.fechaaplicacion >= '20230101' AND c.fechaaplicacion <= DATEADD(day, 1, '20231231') 
+					AND DATEPART(WEEKDAY, c.fechaaplicacion) = 4 ---AHI
+					GROUP BY costo,
+						CASE WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001' ELSE idinsumo END
+				) c ON i.idinsumo = c.idinsumo
+				LEFT JOIN (
+					SELECT 
+						idinsumo,
+						MAX(fecha) as fecha,
+						SUM(CASE WHEN cantidad > 0 THEN cantidad ELSE 0 END) AS cantidad_cocido,
+						SUM(CASE WHEN cantidad < 0 THEN cantidad ELSE 0 END) AS ventas,
+						SUM(cantidad) AS inventario_final
+					FROM movsinv
+					WHERE fecha >= '20230101' AND fecha <= DATEADD(day, 1, '20231231')  AND
+					DATEPART(WEEKDAY, fecha) = 4 ---POR ACA
+					GROUP BY idinsumo
+				) m ON i.idinsumo = m.idinsumo
+				LEFT JOIN insumospresentaciones ip ON i.idinsumo = ip.idinsumo AND ip.idinsumospresentaciones = c.idinsumo
+				WHERE DATEPART(WEEKDAY, m.fecha) = 4
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchVier2023()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				CASE 
+					WHEN c.idinsumo >= '004001' AND c.idinsumo <= '004999' THEN '004001'
+					ELSE i.idinsumo
+				END AS idinsumo,
+			
+				CASE 
+					WHEN m.fecha IS NOT NULL THEN (SELECT DATENAME(WEEKDAY, m.fecha))
+				ELSE '-' END AS dia_semana,
+			
+				i.descripcion,
+			
+				CASE WHEN c.costo IS NOT NULL THEN c.costo ELSE 0 END AS costo,
+				
+				COALESCE(c.cantidad_comprada, 0) AS cantidad_comprada,
+				
+				CASE WHEN ip.rendimiento IS NOT NULL THEN	
+					(CASE WHEN c.costo = 13.33 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 1 AND idinsumo = 004001)
+						 WHEN c.costo = 80 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 6 AND idinsumo = 004001)
+						 WHEN c.costo = 230 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 24 AND idinsumo = 004001)
+					ELSE ip.rendimiento END)
+				ELSE 0 END AS rendimiento,
+				
+				COALESCE(m.cantidad_cocido, 0) AS cantidad_cocido,
+				COALESCE(m.ventas, 0) AS ventas,
+				COALESCE(m.inventario_final, 0) AS inventario_final
+				FROM insumos i
+				LEFT JOIN (
+					SELECT cm.costo,
+							CASE 
+								WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001'
+								ELSE idinsumo
+							END AS idinsumo,
+							SUM(cm.cantidad) AS cantidad_comprada
+				
+					FROM comprasmovtos cm LEFT JOIN compras c ON cm.idcompra = c.idcompra
+					WHERE c.fechaaplicacion >= '20230101' AND c.fechaaplicacion <= DATEADD(day, 1, '20231231') 
+					AND DATEPART(WEEKDAY, c.fechaaplicacion) = 5 ---AHI
+					GROUP BY costo,
+						CASE WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001' ELSE idinsumo END
+				) c ON i.idinsumo = c.idinsumo
+				LEFT JOIN (
+					SELECT 
+						idinsumo,
+						MAX(fecha) as fecha,
+						SUM(CASE WHEN cantidad > 0 THEN cantidad ELSE 0 END) AS cantidad_cocido,
+						SUM(CASE WHEN cantidad < 0 THEN cantidad ELSE 0 END) AS ventas,
+						SUM(cantidad) AS inventario_final
+					FROM movsinv
+					WHERE fecha >= '20230101' AND fecha <= DATEADD(day, 1, '20231231')  AND
+					DATEPART(WEEKDAY, fecha) = 5 ---POR ACA
+					GROUP BY idinsumo
+				) m ON i.idinsumo = m.idinsumo
+				LEFT JOIN insumospresentaciones ip ON i.idinsumo = ip.idinsumo AND ip.idinsumospresentaciones = c.idinsumo
+				WHERE DATEPART(WEEKDAY, m.fecha) = 5 
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchSab2023()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				CASE 
+					WHEN c.idinsumo >= '004001' AND c.idinsumo <= '004999' THEN '004001'
+					ELSE i.idinsumo
+				END AS idinsumo,
+			
+				CASE 
+					WHEN m.fecha IS NOT NULL THEN (SELECT DATENAME(WEEKDAY, m.fecha))
+				ELSE '-' END AS dia_semana,
+			
+				i.descripcion,
+			
+				CASE WHEN c.costo IS NOT NULL THEN c.costo ELSE 0 END AS costo,
+				
+				COALESCE(c.cantidad_comprada, 0) AS cantidad_comprada,
+				
+				CASE WHEN ip.rendimiento IS NOT NULL THEN	
+					(CASE WHEN c.costo = 13.33 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 1 AND idinsumo = 004001)
+						 WHEN c.costo = 80 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 6 AND idinsumo = 004001)
+						 WHEN c.costo = 230 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 24 AND idinsumo = 004001)
+					ELSE ip.rendimiento END)
+				ELSE 0 END AS rendimiento,
+				
+				COALESCE(m.cantidad_cocido, 0) AS cantidad_cocido,
+				COALESCE(m.ventas, 0) AS ventas,
+				COALESCE(m.inventario_final, 0) AS inventario_final
+				FROM insumos i
+				LEFT JOIN (
+					SELECT cm.costo,
+							CASE 
+								WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001'
+								ELSE idinsumo
+							END AS idinsumo,
+							SUM(cm.cantidad) AS cantidad_comprada
+				
+					FROM comprasmovtos cm LEFT JOIN compras c ON cm.idcompra = c.idcompra
+					WHERE c.fechaaplicacion >= '20230101' AND c.fechaaplicacion <= DATEADD(day, 1, '20231231') 
+					AND DATEPART(WEEKDAY, c.fechaaplicacion) = 6 ---AHI
+					GROUP BY costo,
+						CASE WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001' ELSE idinsumo END
+				) c ON i.idinsumo = c.idinsumo
+				LEFT JOIN (
+					SELECT 
+						idinsumo,
+						MAX(fecha) as fecha,
+						SUM(CASE WHEN cantidad > 0 THEN cantidad ELSE 0 END) AS cantidad_cocido,
+						SUM(CASE WHEN cantidad < 0 THEN cantidad ELSE 0 END) AS ventas,
+						SUM(cantidad) AS inventario_final
+					FROM movsinv
+					WHERE fecha >= '20230101' AND fecha <= DATEADD(day, 1, '20231231')  AND
+					DATEPART(WEEKDAY, fecha) = 6 ---POR ACA
+					GROUP BY idinsumo
+				) m ON i.idinsumo = m.idinsumo
+				LEFT JOIN insumospresentaciones ip ON i.idinsumo = ip.idinsumo AND ip.idinsumospresentaciones = c.idinsumo
+				WHERE DATEPART(WEEKDAY, m.fecha) = 6 
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
+	function fetchDom2023()
+	{
+
+		$conexion = new Conexion();
+		$db = $conexion->con();
+
+		try {
+			$query = $db->prepare(
+				"SELECT
+				CASE 
+					WHEN c.idinsumo >= '004001' AND c.idinsumo <= '004999' THEN '004001'
+					ELSE i.idinsumo
+				END AS idinsumo,
+			
+				CASE 
+					WHEN m.fecha IS NOT NULL THEN (SELECT DATENAME(WEEKDAY, m.fecha))
+				ELSE '-' END AS dia_semana,
+			
+				i.descripcion,
+			
+				CASE WHEN c.costo IS NOT NULL THEN c.costo ELSE 0 END AS costo,
+				
+				COALESCE(c.cantidad_comprada, 0) AS cantidad_comprada,
+				
+				CASE WHEN ip.rendimiento IS NOT NULL THEN	
+					(CASE WHEN c.costo = 13.33 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 1 AND idinsumo = 004001)
+						 WHEN c.costo = 80 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 6 AND idinsumo = 004001)
+						 WHEN c.costo = 230 AND i.descripcion = 'REFRESCOS' THEN (SELECT rendimiento FROM insumospresentaciones WHERE rendimiento = 24 AND idinsumo = 004001)
+					ELSE ip.rendimiento END)
+				ELSE 0 END AS rendimiento,
+				
+				COALESCE(m.cantidad_cocido, 0) AS cantidad_cocido,
+				COALESCE(m.ventas, 0) AS ventas,
+				COALESCE(m.inventario_final, 0) AS inventario_final
+				FROM insumos i
+				LEFT JOIN (
+					SELECT cm.costo,
+							CASE 
+								WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001'
+								ELSE idinsumo
+							END AS idinsumo,
+							SUM(cm.cantidad) AS cantidad_comprada
+				
+					FROM comprasmovtos cm LEFT JOIN compras c ON cm.idcompra = c.idcompra
+					WHERE c.fechaaplicacion >= '20230101' AND c.fechaaplicacion <= DATEADD(day, 1, '20231231') 
+					AND DATEPART(WEEKDAY, c.fechaaplicacion) = 7 ---AHI
+					GROUP BY costo,
+						CASE WHEN idinsumo >= '004001' AND idinsumo <= '004999' THEN '004001' ELSE idinsumo END
+				) c ON i.idinsumo = c.idinsumo
+				LEFT JOIN (
+					SELECT 
+						idinsumo,
+						MAX(fecha) as fecha,
+						SUM(CASE WHEN cantidad > 0 THEN cantidad ELSE 0 END) AS cantidad_cocido,
+						SUM(CASE WHEN cantidad < 0 THEN cantidad ELSE 0 END) AS ventas,
+						SUM(cantidad) AS inventario_final
+					FROM movsinv
+					WHERE fecha >= '20230101' AND fecha <= DATEADD(day, 1, '20231231')  AND
+					DATEPART(WEEKDAY, fecha) = 7 ---POR ACA
+					GROUP BY idinsumo
+				) m ON i.idinsumo = m.idinsumo
+				LEFT JOIN insumospresentaciones ip ON i.idinsumo = ip.idinsumo AND ip.idinsumospresentaciones = c.idinsumo
+				WHERE DATEPART(WEEKDAY, m.fecha) = 7
+				");
+
+			$query->execute();
+
+			$fila = $query->fetchAll();
+
+			return $fila;
+
+		} catch (PDOException $e) {
+			echo "Error en la consulta->" . $e;
+		}
+
+	}
+
 
 }

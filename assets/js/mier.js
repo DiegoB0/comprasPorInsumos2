@@ -1,20 +1,8 @@
-/* Datepicker js */
-$('#start_date').datepicker({
-	format: 'dd/mm/yyyy',
-});
-$('#end_date').datepicker({
-	format: 'dd/mm/yyyy',
-});
-
-//Obtener los datos de los inputs de fecha
-function fetch(start_date, end_date) {
+function fetch(mier2023) {
 	$.ajax({
-		url: '../controllers/reportes.php',
-		type: 'POST',
-		data: {
-			start_date: start_date,
-			end_date: end_date,
-		},
+		url: '../controllers/dias.php',
+		type: 'GET',
+		data: { mier2023: 'mier2023' },
 		dataType: 'json',
 		success: function (data) {
 			//Datatable
@@ -46,6 +34,7 @@ function fetch(start_date, end_date) {
 				],
 				responsive: true,
 				columns: [
+					{ data: 'dia_semana', title: 'Día' },
 					{ data: 'descripcion', title: 'Insumo' },
 					{ data: 'costo', title: 'Costo' },
 					{ data: 'cantidad_comprada', title: 'Cantidad Comprada' },
@@ -59,30 +48,3 @@ function fetch(start_date, end_date) {
 	});
 }
 fetch();
-
-// Filtrar
-$(document).on('click', '#filter', function (e) {
-	e.preventDefault();
-
-	var start_date = $('#start_date').val();
-	var end_date = $('#end_date').val();
-
-	if (start_date == '' || end_date == '') {
-		alert('Debe ingresar las fechas');
-	} else {
-		$('#example').DataTable().destroy();
-		fetch(start_date, end_date);
-		console.log(start_date, end_date);
-	}
-});
-
-//Resetear
-$(document).on('click', '#reset', function (e) {
-	e.preventDefault();
-
-	$('#start_date').val('');
-	$('#end_date').val('');
-
-	$('#example').DataTable().destroy();
-	fetch();
-});
